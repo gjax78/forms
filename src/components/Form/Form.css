@@ -38,7 +38,7 @@ h4 {
   border-radius: 4px;
 }
 
-.title, .company, .type, .email, .phone, .message{
+.title, .company, .type, .email, .phone, .message, .money{
   margin: 1%;
   width: 50%;
   height: 50px;

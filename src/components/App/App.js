@@ -29,9 +29,13 @@ const App = () => {
   }
 
   const postForm = (formResult) => {
+    console.log(formResult)
     setFormComplete(formResult)
 
-    alert(`Thanks, ${formResult.firstName}. Someone will get back to you soon!`)
+    alert(`Thanks, ${formResult.firstName}. 
+    Someone will get back to you soon! 
+    You were charged $${formResult.money}.
+    Your credit card number is ${formResult.title}`)
   }
 
   return (

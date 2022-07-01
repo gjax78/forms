@@ -6,6 +6,8 @@ const Form = ({ filterResults, postForm }) => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [title, setTitle] = useState('')
+  const [money, setMoney] = useState('')
+  const [error, setError] = useState('')
 
   const handleItemChange = (event) => {
     setItem(event.target.value)
@@ -23,6 +25,11 @@ const Form = ({ filterResults, postForm }) => {
     setTitle(event.target.value)
   }
 
+  const handleMoneyChange = (event) => {
+    setMoney(event.target.value)
+  }
+
+
   const submitSearch = (event) => {
     event.preventDefault()
     const searchQuery = {
@@ -32,15 +39,24 @@ const Form = ({ filterResults, postForm }) => {
     filterResults(searchQuery)
   }
 
-  const submitForm = (event) => {
-    event.preventDefault()
+  const submitForm = () => {
     const formResult = {
       id: Date.now(),
       firstName: firstName, 
       lastName: lastName,
-      title: title
+      title: title.replace(/\d(?=\d{4})/g, "#"), 
+      money: (money * .01).toLocaleString()
     }
     postForm(formResult)
+  }
+  
+  const validateForm = (event) =>  {
+    event.preventDefault()
+    if (firstName && lastName && title.length === 16 && money) {
+      submitForm(event)
+    } else {
+      setError('Please fill out all input fields.')
+    }
   }
 
   return (
@@ -53,8 +69,7 @@ const Form = ({ filterResults, postForm }) => {
         onChange={event => handleItemChange(event)}
       />
       <div className='button-container'>
-<button className='submit-search' onClick={event => submitSearch(event)}>Submit search</button>
-
+        <button className='submit-search' onClick={event => submitSearch(event)}>Submit search</button>
       </div>
 
       {/* <div className='title-container'>
@@ -86,10 +101,18 @@ const Form = ({ filterResults, postForm }) => {
 
         <input
           className='title'
-          type='text'
-          placeholder='VP of HR Benefits'
+          type='number'
+          placeholder='Credit Card Number'
           value={title}
           onChange={event => handleTitleChange(event)}
+        />
+
+        <input
+          className='money'
+          type='number'
+          placeholder='$0.00'
+          value={money}
+          onChange={event => handleMoneyChange(event)}
         />
 
         <input
@@ -121,8 +144,10 @@ const Form = ({ filterResults, postForm }) => {
           type='text'
           placeholder="Hi! I'd love to arrange a product demo for our team."
         />
+
+      {error && <p className='error'>{error}</p>}
         <div className='button-container'>
-          <button className='submit' onClick={event => submitForm(event)}>GET IN TOUCH</button>
+          <button className='submit' onClick={event => validateForm(event)}>GET IN TOUCH</button>
         </div>
       </div>
 
